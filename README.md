@@ -1,11 +1,78 @@
 ## Generates 8-digit hexadecimal
 
+
+Step 1 understands the problem and its scale:
+to get every single number that can be generated to 8-digit hexadecimal, it would be 4,294,967,295 because this number in hexa is 0xffffffff
+To not repeat the numbers, we must store the numbers at the list to database (to check if we already generated this number or not)
+
+Step 2 Generate and store the 4 billion numbers:
+I searched for some optimizations and found some ways and the first solution was storing the 4 billion users in 10 hours and I ended with optimizing it to ~ 1.26 hours
+and this is with just SQLite database, and I found more better ways to do that but I think this solution will be good for now
+
+Step 3 Get Random number from 1 to the number of the rows at the list:
+After storing all the 4 billion numbers at a table called selected table, want to generate a random number not more than the count of the list at this table
+
+
+Step 4 make the validation:
+after getting the list of the invalid numbers from wiki page (thanks for explaining that you want it to deal with any number of data)
+
+if number % 286331153 ==0
+then it’s like 0xAAAAAAAA
+all the numbers
+
+    0 The hexadecimal of 0 is _ 0x00000000
+    1 The hexadecimal of 286331153 is _ 0x11111111
+    2 The hexadecimal of 572662306 is _ 0x22222222
+    3 The hexadecimal of 858993459 is _ 0x33333333
+    4 The hexadecimal of 1145324612 is _ 0x44444444
+    5 The hexadecimal of 1431655765 is _ 0x55555555
+    6 The hexadecimal of 1717986918 is _ 0x66666666
+    7 The hexadecimal of 2004318071 is _ 0x77777777
+    8 The hexadecimal of 2290649224 is _ 0x88888888
+    9 The hexadecimal of 2576980377 is _ 0x99999999
+    10 The hexadecimal of 2863311530 is _ 0xaaaaaaaa
+    11 The hexadecimal of 3149642683 is _ 0xbbbbbbbb
+    12 The hexadecimal of 3435973836 is _ 0xcccccccc
+    13 The hexadecimal of 3722304989 is _ 0xdddddddd
+    14 The hexadecimal of 4008636142 is _ 0xeeeeeeee
+    15 The hexadecimal of 4294967295 is _ 0xffffffff
+   
+
+
+val2_increasing_number
+if the (number - 19088743) % 286331153 ==0, then it's not valid
+
+    0 The hexadecimal of 19088743 is _ 0x01234567
+    1 The hexadecimal of 305419896 is _ 0x12345678
+    2 The hexadecimal of 591751049 is _ 0x23456789
+    3 The hexadecimal of 878082202 is _ 0x3456789a
+    4 The hexadecimal of 1164413355 is _ 0x456789ab
+    5 The hexadecimal of 1450744508 is _ 0x56789abc
+    6 The hexadecimal of 1737075661 is _ 0x6789abcd
+    7 The hexadecimal of 2023406814 is _ 0x789abcde
+    8 The hexadecimal of 2309737967 is _ 0x89abcdef
+
+not on invalid list
+    searching in the nvalid_list to see if this object is invalid
+    if the list is ordered, then we ca use something like binary search tree, because it will give us O(log n) performance
+     If not, we can just check if the list has this value or not, and this is O(n) performance
+
+
+
+Step 5 If the number is not valid, delete it and if it's valid print it and put it in the new table
+here I did second table to have all the valid data so after printing all the data once, we have the option of:
+
+1- just change the name of unselected table(the empty one) with the selected table and then repeat the whole steps in case we want to add a validation number into the validation list from WIKI 
+
+2- no need to recheck the data again, we can just get a random number from the second table, because its all data are valid
+
+
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 x = 4294967295
-intil_valid = 4294967294
+until_valid = 4294967294
 
 the number of possible Hex
 The maximum size of a database file is 4294967294 pages.
@@ -62,8 +129,34 @@ done after 1:46
 
 
 
+06:57:32
+06:59:20
+done after 1:58
+done
+100000000 : 120
+4294967294 : 1.4
 
+------------------------------------------------------------------------------
+select time
+99999999
+07:02:18
+07:03:09
+done
 
+[(28647397,)]
+07:19:15
+07:19:23
+done
+
+[(53379292,)]
+07:19:57
+07:20:05
+done
+
+[(10941313,)]
+07:29:27
+07:29:35
+done
 
 the validation:
 The hexadecimal of 0xAAAAAAAA is _ 2863311530
